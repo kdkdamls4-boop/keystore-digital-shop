@@ -1,0 +1,25 @@
+{
+  "name": "keystore-digital-shop",
+  "version": "1.0.0",
+  "description": "Веб-сервис интернет-магазина цифровых товаров и лицензионных ключей KeyStore с мгновенной выдачей и панелью администратора (Дипломный проект)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/run-all.js"
+  },
+  "keywords": [
+    "keystore",
+    "digital-goods",
+    "license-keys",
+    "diploma",
+    "express",
+    "sqlite",
+    "javascript"
+  ],
+  "author": "Студент",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

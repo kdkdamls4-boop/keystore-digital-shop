@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyStore — Магазин лицензионных цифровых ключей и подписок</title>
+    <meta name="description" content="Официальные ключи активации игр Steam, PlayStation, Xbox, лицензии Windows и подписки с мгновенной выдачей на экране.">
+
+    <!-- Предзагрузка премиального шрифта Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Таблица стилей в светлом минималистичном стиле Apple -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ========================================== -->
+    <!-- ВЕРХНЯЯ ШАПКА САЙТА (HEADER)               -->
+    <!-- ========================================== -->
+    <header class="header">
+        <div class="container header-container">
+            <!-- Логотип -->
+            <a href="/" class="logo" title="На главную KeyStore">
+                <div class="logo-badge">🔑</div>
+                <div class="logo-text">
+                    <span class="brand-name">Key<span class="brand-accent">Store</span></span>
+                    <span class="brand-tagline">Лицензионные цифровые ключи</span>
+                </div>
+            </a>
+
+            <!-- Поиск по каталогу -->
+            <div class="header-search">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="globalSearchInput" placeholder="Поиск игр, софта, подписок..." autocomplete="off">
+                <button type="button" id="clearSearchBtn" class="clear-search-btn" style="display: none;">&times;</button>
+            </div>
+
+            <!-- Навигация и действия пользователя -->
+            <div class="header-actions">
+                <div id="headerAuthNav" style="display: flex; gap: 8px; align-items: center;">
+                    <!-- Динамически заполняется:
+                         Гость: [🔑 Войти] [Регистрация]
+                         Клиент: [👤 Имя] [Выйти]
+                         Админ: [🛡️ tpemeri] [⚙️ Управление] [Выйти]
+                    -->
+                </div>
+
+                <button type="button" id="cartBtn" class="btn btn-primary cart-btn" title="Открыть корзину">
+                    <span class="cart-icon">🛒</span>
+                    <span class="cart-text">Корзина</span>
+                    <span id="cartCountBadge" class="cart-badge">0</span>
+                    <span id="cartTotalSum" class="cart-sum">0 ₽</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- ========================================== -->
+        <!-- ПРОМО-БАННЕР (HERO SHOWCASE)               -->
+        <!-- ========================================== -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-card">
+                    <div class="hero-content">
+                        <div class="hero-pill">
+                            <span class="pill-dot"></span>
+                            <span>Мгновенная доставка 1 сек • 100% гарантия</span>
+                        </div>
+                        <h1 class="hero-title">Лицензионные игры, софт и подписки</h1>
+                        <p class="hero-subtitle">
+                            Официальные цифровые ключи Steam, PlayStation, Xbox и лицензии Microsoft.
+                            Моментальная выдача на экране сразу после оформления заказа.
+                        </p>
+                        
+                        <div class="hero-promo-wrapper">
+                            <div class="promo-box">
+                                <span class="promo-label">Промокод на скидку 15%:</span>
+                                <span class="promo-code" id="heroPromoCode">DIPLOM2026</span>
+                                <button type="button" class="btn-copy-code" onclick="copyPromoCode('DIPLOM2026')">Скопировать</button>
+                            </div>
+                        </div>
+
+                        <div class="hero-actions">
+                            <a href="#catalog" class="btn btn-primary btn-lg">Выбрать цифровой товар</a>
+                            <a href="#faq" class="btn btn-secondary btn-lg">Инструкции по активации</a>
+                        </div>
+                    </div>
+
+                    <div class="hero-visual">
+                        <div class="hero-showcase-card">
+                            <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&auto=format&fit=crop&q=80" alt="Cyberpunk 2077" class="showcase-img">
+                            <div class="showcase-badge top-badge">🔥 Хит продаж</div>
+                            <div class="showcase-overlay">
+                                <span class="showcase-tag">Steam • Global</span>
+                                <h3 class="showcase-name">Cyberpunk 2077: Ultimate</h3>
+                                <div class="showcase-price-row">
+                                    <span class="showcase-price">1 999 ₽</span>
+                                    <span class="showcase-old-price">2 999 ₽</span>
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="quickBuy(1)">Купить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- ПРЕИМУЩЕСТВА СЕРВИСА (BENEFITS)            -->
+        <!-- ========================================== -->
+        <section class="benefits-section">
+            <div class="container benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <img src="img/icons/delivery_3d.jpg" alt="Мгновенная доставка" class="benefit-img-3d">
+                    </div>
+                    <div class="benefit-info">
+                        <h4 class="benefit-title">Мгновенная доставка</h4>
+                        <p class="benefit-desc">Ключ появляется на вашем экране сразу после покупки и в личном кабинете</p>
+                    </div>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <img src="img/icons/license_3d.jpg" alt="100% Лицензия" class="benefit-img-3d">
+                    </div>
+                    <div class="benefit-info">
+                        <h4 class="benefit-title">100% Лицензия</h4>
+                        <p class="benefit-desc">Все цифровые коды закупаются напрямую у официальных издателей и вендоров</p>
+                    </div>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <img src="img/icons/payment_3d.jpg" alt="Удобная оплата" class="benefit-img-3d">
+                    </div>
+                    <div class="benefit-info">
+                        <h4 class="benefit-title">Удобная оплата</h4>
+                        <p class="benefit-desc">Оплата без комиссий через СБП по QR-коду, картами МИР, Visa и MasterCard</p>
+                    </div>
+                </div>
+
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <img src="img/icons/support_3d.png" alt="Поддержка 24/7" class="benefit-img-3d">
+                    </div>
+                    <div class="benefit-info">
+                        <h4 class="benefit-title">Поддержка 24/7</h4>
+                        <p class="benefit-desc">Поможем с активацией и ответим на любые вопросы в течение пары минут</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- КАТАЛОГ ЦИФРОВЫХ ТОВАРОВ (CATALOG)         -->
+        <!-- ========================================== -->
+        <section class="catalog-section" id="catalog">
+            <div class="container">
+                <div class="catalog-header">
+                    <div>
+                        <h2 class="section-title">Каталог цифровых лицензий</h2>
+                        <p class="section-subtitle">Выберите платформу или категорию интересующих товаров</p>
+                    </div>
+
+                    <!-- Сортировка -->
+                    <div class="sort-wrapper">
+                        <label for="catalogSortSelect" class="sort-label">Сортировка:</label>
+                        <select id="catalogSortSelect" class="sort-select">
+                            <option value="popular">Сначала популярные</option>
+                            <option value="price-asc">Сначала дешевле</option>
+                            <option value="price-desc">Сначала дороже</option>
+                            <option value="rating">По рейтингу</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Фильтры по категориям (Игры / Софт / Подписки) -->
+                <div class="categories-bar" id="categoriesBar">
+                    <button type="button" class="cat-pill active" data-category="all">
+                        <span>Все категории</span>
+                    </button>
+                    <!-- Категории будут отрисованы динамически из API -->
+                </div>
+
+                <!-- Фильтры по платформам (Steam, PS, Xbox, Windows) -->
+                <div class="platforms-bar" id="platformsBar">
+                    <button type="button" class="plat-chip active" data-platform="all">Все платформы</button>
+                    <!-- Платформы загрузятся из API -->
+                </div>
+
+                <!-- Сетка товаров -->
+                <div class="products-grid" id="productsGrid">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Загрузка каталога лицензионных товаров...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- БАЗА ЗНАНИЙ И ЧАСТЫЕ ВОПРОСЫ (FAQ)        -->
+        <!-- ========================================== -->
+        <section class="faq-section" id="faq">
+            <div class="container faq-container">
+                <div class="faq-header">
+                    <span class="faq-badge">База Знаний</span>
+                    <h2 class="section-title">Часто задаваемые вопросы</h2>
+                    <p class="section-subtitle">Всё об активации ключей, гарантиях и безопасности покупок</p>
+                </div>
+
+                <div class="faq-accordion" id="faqAccordion">
+                    <!-- Загружается из API GET /api/kb -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ========================================== -->
+    <!-- ПОДВАЛ САЙТА (FOOTER)                      -->
+    <!-- ========================================== -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <div class="footer-col">
+                <div class="logo">
+                    <div class="logo-badge">🔑</div>
+                    <div class="logo-text">
+                        <span class="brand-name">Key<span class="brand-accent">Store</span></span>
+                        <span class="brand-tagline">Цифровая дистрибуция</span>
+                    </div>
+                </div>
+                <p class="footer-about">
+                    Дипломный проект: Веб-ориентированная информационная система онлайн-продажи лицензионных цифровых товаров.
+                </p>
+                <div class="footer-meta">
+                    Выполнил студент • 2026 год
+                </div>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-heading">Каталог</h4>
+                <ul class="footer-links">
+                    <li><a href="#catalog" onclick="filterByCategory('games')">Игры для ПК и консолей</a></li>
+                    <li><a href="#catalog" onclick="filterByCategory('software')">Операционные системы и ПО</a></li>
+                    <li><a href="#catalog" onclick="filterByCategory('subscriptions')">Игровые подписки и сервисы</a></li>
+                    <li><a href="#catalog" onclick="filterByCategory('gift-cards')">Подарочные карты кошелька</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-heading">Информация</h4>
+                <ul class="footer-links">
+                    <li><a href="#faq">Инструкции по активации</a></li>
+                    <li><a href="javascript:void(0)" onclick="openCabinetModal()">Мои покупки</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4 class="footer-heading">Контакты</h4>
+                <p class="footer-text">📍 ул. Студенческая, 1</p>
+                <p class="footer-text">✉️ support@keystore-digital.ru</p>
+                <p class="footer-text">⏱️ Выдача ключей: 24/7 моментально</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- МОДАЛЬНЫЕ ОКНА                             -->
+    <!-- ========================================== -->
+
+    <!-- 1. Модальное окно детального просмотра товара -->
+    <div class="modal-backdrop" id="productModal">
+        <div class="modal-card modal-lg">
+            <div class="modal-header">
+                <h3 class="modal-title" id="productModalTitle">Детали цифрового товара</h3>
+                <button type="button" class="modal-close-btn" onclick="closeModal('productModal')">&times;</button>
+            </div>
+            <div class="modal-body" id="productModalBody">
+                <!-- Контент подгружается динамически -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Модальное окно корзины и оформления заказа -->
+    <div class="modal-backdrop" id="cartModal">
+        <div class="modal-card modal-md">
+            <div class="modal-header">
+                <div class="modal-title-with-icon">
+                    <span class="modal-icon">🛒</span>
+                    <div>
+                        <h3 class="modal-title">Корзина покупок</h3>
+                        <span class="modal-subtitle">Проверьте выбранные цифровые товары</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeModal('cartModal')">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div id="cartItemsList" class="cart-items-list">
+                    <!-- Заполняется динамически -->
+                </div>
+
+                <!-- Ввод промокода -->
+                <div class="promo-input-group">
+                    <input type="text" id="promoInput" placeholder="Промокод (напр. DIPLOM2026)" autocomplete="off">
+                    <button type="button" id="applyPromoBtn" class="btn btn-secondary">Применить</button>
+                </div>
+                <div id="promoStatusMessage" class="promo-status"></div>
+
+                <!-- Форма покупателя -->
+                <div class="checkout-form-block">
+                    <h4 class="form-block-title">Данные для получения цифрового ключа</h4>
+                    <div class="form-group">
+                        <label for="orderEmail">Ваш Email <span class="required">*</span></label>
+                        <input type="email" id="orderEmail" placeholder="name@example.com" required>
+                        <small class="form-hint">Ключ сразу появится на экране и дублируется в личный кабинет</small>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="orderName">Имя покупателя</label>
+                            <input type="text" id="orderName" placeholder="Иван">
+                        </div>
+                        <div class="form-group">
+                            <label for="orderPhone">Телефон (опционально)</label>
+                            <input type="tel" id="orderPhone" placeholder="+7 (999) 000-00-00">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Способ оплаты</label>
+                        <div class="payment-methods-grid">
+                            <label class="payment-radio-label">
+                                <input type="radio" name="paymentMethod" value="СБП (QR-код)" checked>
+                                <span class="payment-chip">⚡ СБП (0% комиссии)</span>
+                            </label>
+                            <label class="payment-radio-label">
+                                <input type="radio" name="paymentMethod" value="Банковская карта">
+                                <span class="payment-chip">💳 Банковская карта</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Итоги заказа -->
+                <div class="order-summary-box">
+                    <div class="summary-line">
+                        <span>Подытог:</span>
+                        <span id="summarySubtotal">0 ₽</span>
+                    </div>
+                    <div class="summary-line discount-line" id="summaryDiscountRow" style="display: none;">
+                        <span>Скидка по промокоду:</span>
+                        <span id="summaryDiscountVal">-0 ₽</span>
+                    </div>
+                    <div class="summary-line total-line">
+                        <span>Итого к оплате:</span>
+                        <span id="summaryTotal" class="total-highlight">0 ₽</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('cartModal')">Продолжить покупки</button>
+                <button type="button" id="submitOrderBtn" class="btn btn-primary btn-lg" onclick="submitOrder()">
+                    Оплатить и получить ключи
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Модальное окно выданного ключа (Digital Receipt / Success) -->
+    <div class="modal-backdrop" id="receiptModal">
+        <div class="modal-card modal-md receipt-card">
+            <div class="receipt-header">
+                <div class="success-check-badge">✓</div>
+                <h3 class="receipt-title">Заказ успешно оформлен!</h3>
+                <p class="receipt-subtitle" id="receiptOrderNumber">Заказ #KEY-XXXXX</p>
+            </div>
+
+            <div class="modal-body">
+                <div class="keys-issued-container" id="keysIssuedContainer">
+                    <!-- Заполняется выданными ключами -->
+                </div>
+
+                <div class="receipt-instruction-box">
+                    <h5 class="instruction-heading">ℹ️ Как активировать ключ:</h5>
+                    <p class="instruction-text">
+                        Скопируйте ключ и вставьте его в клиенте вашей платформы (Steam / PS Store / Xbox / Windows).
+                        Ключ также навсегда привязан к вашему Email в Личном кабинете.
+                    </p>
+                </div>
+            </div>
+
+            <div class="modal-footer" style="justify-content: center; gap: 14px;">
+                <button type="button" class="btn btn-primary" onclick="closeModal('receiptModal')">Отлично, спасибо!</button>
+                <button type="button" class="btn btn-secondary" onclick="openCabinetModal()">Перейти в Мои покупки</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Модальное окно личного кабинета (История ключей) -->
+    <div class="modal-backdrop" id="cabinetModal">
+        <div class="modal-card modal-lg">
+            <div class="modal-header">
+                <div class="modal-title-with-icon">
+                    <span class="modal-icon">👤</span>
+                    <div>
+                        <h3 class="modal-title">Личный кабинет покупателя</h3>
+                        <span class="modal-subtitle">История всех купленных лицензионных ключей</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeModal('cabinetModal')">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <!-- Защищенный доступ к личному кабинету (если не авторизован) -->
+                <div id="cabinetLoginForm" class="cabinet-login-box" style="text-align: center; padding: 28px 16px;">
+                    <div style="font-size: 2.4rem; margin-bottom: 12px;">🔐</div>
+                    <h4 style="margin-bottom: 8px; font-weight: 700; color: var(--text-main);">Личный кабинет защищен</h4>
+                    <p class="login-intro" style="max-width: 440px; margin: 0 auto 20px auto; color: var(--text-secondary);">
+                        Для безопасного просмотра купленных лицензионных ключей требуется авторизация с паролем.
+                    </p>
+                    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                        <button type="button" class="btn btn-primary" onclick="openAuthModal('login')">🔑 Войти с паролем</button>
+                        <button type="button" class="btn btn-secondary" onclick="openAuthModal('register')">Регистрация</button>
+                    </div>
+                </div>
+
+                <!-- Контент истории заказов (когда вошли) -->
+                <div id="cabinetOrdersArea" style="display: none;">
+                    <div class="cabinet-user-bar">
+                        <div>
+                            <span>Вы вошли как: </span>
+                            <strong id="cabinetUserEmail">user@example.com</strong>
+                        </div>
+                        <button type="button" class="btn btn-ghost btn-sm" onclick="cabinetLogout()">Выйти</button>
+                    </div>
+
+                    <div id="cabinetOrdersList" class="cabinet-orders-list">
+                        <!-- Список заказов с ключами -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. Модальное окно авторизации и регистрации по почте -->
+    <div class="modal-backdrop" id="authModal">
+        <div class="modal-card modal-sm" style="max-width: 440px;">
+            <div class="modal-header">
+                <div class="modal-title-with-icon">
+                    <span class="modal-icon">🔐</span>
+                    <div>
+                        <h3 class="modal-title" id="authModalTitle">Авторизация</h3>
+                        <span class="modal-subtitle">Вход в личный кабинет KeyStore</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeModal('authModal')">&times;</button>
+            </div>
+
+            <div class="modal-body" style="padding-top: 10px;">
+                <!-- Переключатель вкладок Вход / Регистрация -->
+                <div class="auth-tabs-nav">
+                    <button type="button" id="tabAuthLoginBtn" class="auth-tab-btn active" onclick="switchAuthTab('login')">Вход</button>
+                    <button type="button" id="tabAuthRegisterBtn" class="auth-tab-btn" onclick="switchAuthTab('register')">Регистрация</button>
+                </div>
+
+                <!-- Вкладка 1: Вход по логину / почте -->
+                <form id="authLoginForm" onsubmit="handleAuthLogin(event)">
+                    <div class="form-group">
+                        <label for="authLoginInput">Логин или Email *</label>
+                        <input type="text" id="authLoginInput" placeholder="tpemeri или email@domain.ru" required autocomplete="username">
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 22px;">
+                        <label for="authPasswordInput">Пароль *</label>
+                        <input type="password" id="authPasswordInput" placeholder="••••••••" required autocomplete="current-password">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 1rem;">
+                        Войти в аккаунт
+                    </button>
+
+                    <div style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--border-color); text-align: center;">
+                        <small style="color: var(--text-muted); font-size: 0.8rem;">
+                            Администратор: <b>tpemeri</b> / <b>rqllo</b>
+                        </small>
+                    </div>
+
+                    <p class="auth-switch-text">
+                        Еще нет аккаунта? <span class="auth-switch-link" onclick="switchAuthTab('register')">Создать аккаунт</span>
+                    </p>
+                </form>
+
+                <!-- Вкладка 2: Регистрация по почте -->
+                <form id="authRegisterForm" style="display: none;" onsubmit="handleAuthRegister(event)">
+                    <div class="form-group">
+                        <label for="regNameInput">Ваше имя *</label>
+                        <input type="text" id="regNameInput" placeholder="Иван Смирнов" required autocomplete="name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regEmailInput">Электронная почта (Email) *</label>
+                        <input type="email" id="regEmailInput" placeholder="ivan@gmail.com" required autocomplete="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPasswordInput">Пароль (минимум 4 символа) *</label>
+                        <input type="password" id="regPasswordInput" placeholder="••••••••" minlength="4" required autocomplete="new-password">
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 22px;">
+                        <label for="regConfirmPasswordInput">Повтор пароля *</label>
+                        <input type="password" id="regConfirmPasswordInput" placeholder="••••••••" minlength="4" required autocomplete="new-password">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; font-size: 1rem;">
+                        Зарегистрироваться
+                    </button>
+
+                    <p class="auth-switch-text">
+                        Уже есть аккаунт? <span class="auth-switch-link" onclick="switchAuthTab('login')">Войти</span>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Панель управления администратора tpemeri (SPA модальное окно, только для админа) -->
+    <div class="modal-backdrop" id="adminModal">
+        <div class="modal-card modal-lg" style="max-width: 1060px; max-height: 90vh;">
+            <div class="modal-header">
+                <div class="modal-title-with-icon">
+                    <span class="modal-icon" style="background: linear-gradient(135deg, #10b981 0%, #0071e3 100%);">⚙️</span>
+                    <div>
+                        <h3 class="modal-title">Панель управления магазином</h3>
+                        <span class="modal-subtitle">Администратор: <b>tpemeri</b> • Управление заказами, складом и каталогом</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeModal('adminModal')">&times;</button>
+            </div>
+
+            <div class="modal-body" style="padding-top: 14px;">
+                <!-- KPI показатели -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">💰 Выручка</div>
+                        <div class="kpi-value" id="kpiRevenue">0 ₽</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">📦 Всего заказов</div>
+                        <div class="kpi-value" id="kpiOrders">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">🔑 Ключей продано</div>
+                        <div class="kpi-value" id="kpiKeysSold">0</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">🏢 Ключей на складе</div>
+                        <div class="kpi-value" id="kpiKeysStock" style="color: var(--primary);">0</div>
+                    </div>
+                </div>
+
+                <!-- Вкладки админки -->
+                <div class="admin-nav-bar">
+                    <button type="button" class="admin-nav-btn active" onclick="switchAdminTab('orders')">📊 Заказы и выданные ключи</button>
+                    <button type="button" class="admin-nav-btn" onclick="switchAdminTab('add-product')">➕ Добавить товар</button>
+                    <button type="button" class="admin-nav-btn" onclick="switchAdminTab('add-keys')">📥 Склад ключей (Пополнение)</button>
+                    <button type="button" class="admin-nav-btn" onclick="switchAdminTab('kb')">📚 База Знаний и регламенты</button>
+                </div>
+
+                <!-- Вкладка 1: Заказы -->
+                <div id="tabOrders" class="admin-table-card">
+                    <div class="admin-card-header">
+                        <div>
+                            <h4 style="font-size: 1.05rem; font-weight: 700;">Реестр заказов и выданных ключей</h4>
+                            <small style="color: var(--text-muted);">Мгновенная фиксация транзакций с привязкой лицензионных кодов</small>
+                        </div>
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="loadAdminOrders()">🔄 Обновить</button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>№ Заказа</th>
+                                    <th>Email покупателя</th>
+                                    <th>Сумма</th>
+                                    <th>Оплата</th>
+                                    <th>Купленные товары и ключи</th>
+                                    <th>Дата</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminOrdersTbody">
+                                <!-- Заполняется динамически -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Вкладка 2: Добавление товара -->
+                <div id="tabAddProduct" class="admin-table-card" style="display: none;">
+                    <div class="admin-card-header">
+                        <h4 style="font-size: 1.05rem; font-weight: 700;">Добавление цифрового товара в каталог</h4>
+                    </div>
+
+                    <form id="addProductForm" onsubmit="handleAddProduct(event)">
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label>Категория *</label>
+                                <select id="prodCategorySelect" required class="sort-select" style="width: 100%; padding: 10px;"></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Платформа *</label>
+                                <select id="prodPlatformSelect" required class="sort-select" style="width: 100%; padding: 10px;"></select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Название цифрового товара *</label>
+                            <input type="text" id="prodNameInput" placeholder="напр. S.T.A.L.K.E.R. 2: Heart of Chornobyl" required>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label>Цена продажи (₽) *</label>
+                                <input type="number" id="prodPriceInput" step="1" placeholder="2490" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Старая цена (для скидки, ₽)</label>
+                                <input type="number" id="prodOldPriceInput" step="1" placeholder="3490">
+                            </div>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div class="form-group">
+                                <label>Регион активации</label>
+                                <input type="text" id="prodRegionInput" value="Global">
+                            </div>
+                            <div class="form-group">
+                                <label>Бейдж (опционально)</label>
+                                <input type="text" id="prodBadgeInput" placeholder="Новинка / Хит / Скидка">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Ссылка на постер/обложку (URL)</label>
+                            <input type="url" id="prodImageInput" placeholder="https://images.unsplash.com/..." value="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Краткое описание (1-2 строки)</label>
+                            <input type="text" id="prodShortDescInput" placeholder="Культовый шутер с открытым миром Чернобыльской Зоны.">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Подробное описание товара</label>
+                            <textarea id="prodDescInput" rows="3" style="width: 100%; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-family: inherit;"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Инструкция по активации для покупателя</label>
+                            <textarea id="prodGuideInput" rows="3" style="width: 100%; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-family: inherit;">1. Откройте клиент Steam на ПК.
+2. Меню "Игры" -> "Активировать в Steam...".
+3. Введите купленный ключ и подтвердите активацию.</textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg" style="margin-top: 10px;">
+                            Опубликовать товар в магазине
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Вкладка 3: Склад ключей -->
+                <div id="tabAddKeys" class="admin-table-card" style="display: none;">
+                    <div class="admin-card-header">
+                        <div>
+                            <h4 style="font-size: 1.05rem; font-weight: 700;">Пополнение склада лицензионных ключей (Keys Pool)</h4>
+                            <small style="color: var(--text-muted);">Загрузка пачки цифровых кодов для автоматической выдачи покупателям</small>
+                        </div>
+                    </div>
+
+                    <form id="addKeysForm" onsubmit="handleAddKeys(event)">
+                        <div class="form-group" style="max-width: 500px;">
+                            <label>Выберите цифровой товар *</label>
+                            <select id="keysProductSelect" required class="sort-select" style="width: 100%; padding: 10px;"></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Ключи активации (каждый ключ с новой строки) *</label>
+                            <textarea id="keysTextarea" rows="6" placeholder="XXXXX-XXXXX-XXXXX-XXXXX
+YYYYY-YYYYY-YYYYY-YYYYY" required style="width: 100%; padding: 12px; font-family: monospace; font-size: 0.95rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);"></textarea>
+                        </div>
+
+                        <div style="display: flex; gap: 12px; margin-top: 12px;">
+                            <button type="submit" class="btn btn-primary">Загрузить ключи на склад</button>
+                            <button type="button" class="btn btn-secondary" onclick="generateDemoKeysForStock()">🎲 Сгенерировать 5 тестовых ключей</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Вкладка 4: База Знаний -->
+                <div id="tabKB" class="admin-table-card" style="display: none;">
+                    <div class="admin-card-header">
+                        <div>
+                            <h4 style="font-size: 1.05rem; font-weight: 700;">База Знаний и регламенты</h4>
+                            <small style="color: var(--text-muted);">Управление инструкциями для клиентов и регламентами для защиты диплома</small>
+                        </div>
+                    </div>
+
+                    <div id="adminKBList" style="margin-bottom: 24px;"></div>
+
+                    <div style="border-top: 1px solid var(--border-color); padding-top: 20px;">
+                        <h4 style="font-size: 0.98rem; font-weight: 700; margin-bottom: 12px;">Добавить статью или регламент:</h4>
+                        <form id="addKBForm" onsubmit="handleAddKB(event)">
+                            <div class="form-grid-2">
+                                <div class="form-group">
+                                    <label>Категория</label>
+                                    <input type="text" id="kbCategoryInput" placeholder="Активация / Безопасность / Оплата" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Тип доступа</label>
+                                    <select id="kbStaffSelect" class="sort-select" style="width: 100%; padding: 10px;">
+                                        <option value="0">Публичный FAQ (для клиентов)</option>
+                                        <option value="1">Внутренний регламент (для диплома/персонала)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Вопрос / Название регламента</label>
+                                <input type="text" id="kbQuestionInput" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Текст ответа / регламента</label>
+                                <textarea id="kbAnswerInput" rows="3" required style="width: 100%; padding: 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-family: inherit;"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Сохранить статью</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Всплывающие уведомления (Toast) -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Подключение клиентского JavaScript -->
+    <script src="js/app.js"></script>
+</body>
+</html>
